@@ -1,4 +1,4 @@
-package com.pfinfo.impor;
+package com.pfinfo.impor.base;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -14,6 +14,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 
+import com.pfinfo.impor.annotation.ImportModel;
+import com.pfinfo.impor.bean.ImportModelBean;
 import com.pfinfo.impor.context.ImportModelBeanCatch;
 import com.pfinfo.impor.exception.ImportExcelBaseException;
 import com.pfinfo.impor.util.ExcelUtil;
@@ -32,6 +34,12 @@ public class ImportUtil {
 
 	/**
 	 * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。
+	 * 一下原因可能导致转换过程出错：
+	 * <ol>
+	 * <li>类对象没有使用{@link ImportModel com.pfinfo.impor.annotation.ImportModel}注解</li>
+	 * <li></li>
+	 * <li></li>
+	 * </ol>
 	 * @param clazz 类对象
 	 * @param url 文件http地址
 	 * @return list集合
@@ -42,13 +50,16 @@ public class ImportUtil {
 		if (NullCheckUtil.isEmpty(clazz)) {
 			throw new ImportExcelBaseException("clazz is empty");
 		}
+		ImportModelBean importModelBean = ImportModelBeanCatch.getInstance()
+				.getCatch(clazz);
+		if(NullCheckUtil.isEmpty(importModelBean)){
+			throw new ImportExcelBaseException(" 类 "+clazz.getName()+"可能没有使用ImportModel注解");
+		}
 		String filePath = HttpDownLoad.downLoadFormUrl(url);
 		Workbook workbook = ExcelUtil.getWorkbook(filePath);
 		if (NullCheckUtil.isEmpty(workbook)) {
 			throw new ImportExcelBaseException("解析Excel失败");
 		}
-		ImportModelBean importModelBean = ImportModelBeanCatch.getInstance()
-				.getCatch(clazz);
 		Map<String, Row> headers = ExcelUtil.getHeads(workbook);
 		checkHeader(clazz, headers, importModelBean);
 		Sheet sheet = ExcelUtil.getSheet(workbook,

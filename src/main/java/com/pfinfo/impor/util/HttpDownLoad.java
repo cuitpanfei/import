@@ -15,11 +15,19 @@ import com.pfinfo.impor.exception.ImportExcelBaseException;
 public class HttpDownLoad {
 	
 	public static String downLoadFormUrl(String urlStr) throws ImportExcelBaseException{
+		return downLoadFormUrl(urlStr,"/tmp/");
+	}
+	
+	public static String downLoadFormUrl(String urlStr,String savepath) throws ImportExcelBaseException{
+		return downLoadFormUrl(urlStr,savepath,3);
+	}
+	
+	public static String downLoadFormUrl(String urlStr,String savepath,int time) throws ImportExcelBaseException{
 		String suffix = StringUtil.getFileSuffix(urlStr);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
 		String fileName = LocalDateTime.now().format(formatter)+suffix;
 		try{
-			String localPath = downLoadFormUrl(urlStr, fileName, "/tmp/", 3);
+			String localPath = downLoadFormUrl(urlStr, fileName, savepath, time);
 			return localPath;
 		}catch(IOException e){
 			throw new ImportExcelBaseException(e);

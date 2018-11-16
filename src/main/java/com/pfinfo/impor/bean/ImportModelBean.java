@@ -1,4 +1,4 @@
-package com.pfinfo.impor;
+package com.pfinfo.impor.bean;
 
 import java.io.Serializable;
 import java.util.Map;

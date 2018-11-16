@@ -14,12 +14,12 @@ public class StringUtil {
 			throw new ImportExcelBaseException("文件路径不能为空");
 		}
 		// del url path param
-		String uri = url.substring(0,url.indexOf("?"));
+		String uri = url.indexOf("?")==-1?url:url.substring(0,url.indexOf("?"));
 		if(!org.apache.poi.util.StringUtil.endsWithIgnoreCase(uri, "xls")
 				&& !org.apache.poi.util.StringUtil.endsWithIgnoreCase(uri, "xlsx")){
 			throw new ImportExcelBaseException("文件不是Excel格式");
 		}
-		return url.substring(0,url.lastIndexOf("."));
+		return url.substring(url.lastIndexOf("."),url.length());
 	}
 
 	/**
