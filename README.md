@@ -1,6 +1,6 @@
-#通用导入 1.0版本
+# 通用导入 1.0版本
 
-##使用说明
+## 使用说明
 
 
 ### 1.导入pom
@@ -18,7 +18,7 @@ import com.pfinfo.impor.annotation.ImportModel;
 import com.pfinfo.impor.annotation.ModelField;
 
 
-@ImportModel(sheetName = "床垫")
+@ImportModel(sheetName = "终端")
 public class TerminalInfo {
 	
 	@ModelField(columnName="名称")
@@ -28,7 +28,7 @@ public class TerminalInfo {
 ```
 ### 3. Excel文件转为对应List集合
 
-#### 1. 启动类上使用注解@EnableImportUtil
+#### 1). 启动类上使用注解@EnableImportUtil
 
 ```java
 @EnableImportUtil
@@ -43,7 +43,7 @@ public class ImportSpringApplication {
 	}
 }
 ```
-#### 2. 业务类（controller/service/Action/...）内部调用工具类那只方法。
+#### 2). 业务类（controller/service/Action/...）内部调用工具类那只方法。
 
 我这里就在controller层展示了，如下：
 
