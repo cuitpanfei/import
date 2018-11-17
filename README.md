@@ -71,3 +71,8 @@ public class ImportTerminalController {
 }
 ```
 
+# 通用导入 1.1版本
+
+## 更新说明：
+
+将数据转换时吞掉的异常抛出，只要有一行数据有问题，就直接终止导入操作
