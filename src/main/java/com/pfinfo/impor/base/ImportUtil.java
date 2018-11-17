@@ -1,19 +1,5 @@
 package com.pfinfo.impor.base;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.stereotype.Component;
-
 import com.pfinfo.impor.annotation.ImportModel;
 import com.pfinfo.impor.bean.ImportModelBean;
 import com.pfinfo.impor.context.ImportModelBeanCatch;
@@ -22,6 +8,15 @@ import com.pfinfo.impor.util.ExcelUtil;
 import com.pfinfo.impor.util.HttpDownLoad;
 import com.pfinfo.impor.util.NullCheckUtil;
 import com.pfinfo.impor.util.StringUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 批量导入数据转换工具
@@ -61,6 +56,7 @@ public class ImportUtil {
 			throw new ImportExcelBaseException("解析Excel失败");
 		}
 		Map<String, Row> headers = ExcelUtil.getHeads(workbook);
+        //根据类对象检查表头，如果检查通过，返回true，检查不通过，抛出异常。
 		checkHeader(clazz, headers, importModelBean);
 		Sheet sheet = ExcelUtil.getSheet(workbook,
 				importModelBean.getSheetName());
@@ -68,40 +64,48 @@ public class ImportUtil {
 		return data;
 	}
 
-	private <T> List<T> getData(Class<T> clazz,
-			ImportModelBean importModelBean, Sheet sheet) {
-		List<T> list = new ArrayList<>();
-		Iterator<Row> rows = sheet.iterator();
-		// excel 行
-		Row headerRow = rows.next();
-		Map<String, Integer> header = ExcelUtil.getHeaderInfo(headerRow);
-		Map<String, String> colsMap = importModelBean.getColsMap();
-		Map<String, Field> allField = Arrays.stream(clazz.getDeclaredFields())
-				.collect(Collectors.toMap(Field::getName, t->t));
-		while (rows.hasNext()) {
-			Row row = rows.next();
-			T t = null;
-			try {
-				t = getTData(clazz, allField, header, colsMap, row);
-			} catch (ImportExcelBaseException e) {
-				e.printStackTrace();
-			}
-			if (NullCheckUtil.isNotEmpty(t)) {
-				list.add(t);
-			}
-		}
-		return list;
-	}
+    /**
+     * 讲sheet表内的数据转化为对应的实体类集合，映射规则用 importModelBean 传入。
+     *
+     * @param clazz           实体类
+     * @param importModelBean 映射规则
+     * @param sheet           表数据
+     * @param <T>             泛型
+     * @return 泛型对象集合
+     */
+    private <T> List<T> getData(Class<T> clazz,
+                                ImportModelBean importModelBean, Sheet sheet) {
+        List<T> list = new ArrayList<>();
+        Iterator<Row> rows = sheet.iterator();
+        // excel 行
+        Row headerRow = rows.next();
+        Map<String, Integer> header = ExcelUtil.getHeaderInfo(headerRow);
+        Map<String, String> colsMap = importModelBean.getColsMap();
+        Map<String, Field> allField = Arrays.stream(clazz.getDeclaredFields())
+                .collect(Collectors.toMap(Field::getName, t -> t));
+        while (rows.hasNext()) {
+            Row row = rows.next();
+            T t = null;
+            try {
+                t = getTData(clazz, allField, header, colsMap, row);
+            } catch (ImportExcelBaseException e) {
+                e.printStackTrace();
+            }
+            if (NullCheckUtil.isNotEmpty(t)) {
+                list.add(t);
+            }
+        }
+        return list;
+    }
 
 	/**
 	 * 
 	 * @param clazz
 	 * @param header
-	 * @param colsMap
-	 * @param row
+     * @param colsMap
+     * @param row
 	 * @return
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
+     * @throws ImportExcelBaseException
 	 */
 	private <T> T getTData(Class<T> clazz, Map<String, Field> allField,
 			Map<String, Integer> header, Map<String, String> colsMap, Row row)
@@ -116,9 +120,10 @@ public class ImportUtil {
 					// 打破封装
 					field.setAccessible(true);
 					Method m = clazz.getMethod("set" + StringUtil.upperCase(fieldName),field.getType());
-					m.invoke(t, value);
-				} catch (Exception e) {
-					e.printStackTrace();
+                    m.invoke(t, value);
+                } catch (Exception e) {
+                    //将异常信息转化为运行时异常，抛出。
+                    throw new RuntimeException(e);
 				}
 			});
 			return t;
