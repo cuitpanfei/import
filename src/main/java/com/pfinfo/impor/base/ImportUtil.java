@@ -28,8 +28,9 @@ import java.util.stream.Collectors;
 public class ImportUtil {
 
 	/**
-	 * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。
-	 * 一下原因可能导致转换过程出错：
+	 * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。默认会存储excel到linux环境的 /tmp目录下，如果开发人员想自定义存储路径，
+	 * 建议开发人员使用{@link getData(Class<T>, String, String)}。
+	 * 以下原因可能导致转换过程出错：
 	 * <ol>
 	 * <li>类对象没有使用{@link ImportModel com.pfinfo.impor.annotation.ImportModel}注解</li>
 	 * <li></li>
@@ -42,6 +43,25 @@ public class ImportUtil {
 	 */
 	public <T> List<T> getData(Class<T> clazz, String url)
 			throws ImportExcelBaseException {
+		return getData(clazz,url,"/tmp");
+	}
+	
+	/**
+	 * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。如果开发人员想自定义存储路径，建议开发人员使用此方法，不建议使用{@link getData(Class<T>, String)}。
+	 * 以下原因可能导致转换过程出错：
+	 * <ol>
+	 * <li>类对象没有使用{@link ImportModel com.pfinfo.impor.annotation.ImportModel}注解</li>
+	 * <li></li>
+	 * <li></li>
+	 * </ol>
+	 * @param clazz 类对象
+	 * @param url 文件http地址
+	 * @param path 文件下载后本地文件夹
+	 * @return list集合
+	 * @throws ImportExcelBaseException
+	 */
+	public <T> List<T> getData(Class<T> clazz, String url,String path)
+			throws ImportExcelBaseException {
 		if (NullCheckUtil.isEmpty(clazz)) {
 			throw new ImportExcelBaseException("clazz is empty");
 		}
@@ -50,7 +70,7 @@ public class ImportUtil {
 		if(NullCheckUtil.isEmpty(importModelBean)){
 			throw new ImportExcelBaseException(" 类 "+clazz.getName()+"可能没有使用ImportModel注解");
 		}
-		String filePath = HttpDownLoad.downLoadFormUrl(url);
+		String filePath = HttpDownLoad.downLoadFormUrl(url,path);
 		Workbook workbook = ExcelUtil.getWorkbook(filePath);
 		if (NullCheckUtil.isEmpty(workbook)) {
 			throw new ImportExcelBaseException("解析Excel失败");
@@ -156,7 +176,7 @@ public class ImportUtil {
 				if (value == null) {
 					allExceptionMsg.add("第" + cell.getColumnIndex()
 							+ "列不能转为文本格式，需要手动设置为文本格式。如果不是数据列，请删除单元列");
-				} else if (!colsMap.containsValue(value)) {
+				} else if (!colsMap.containsKey(value)) {
 					allExceptionMsg.add(clazz.getName() + "中缺少" + value
 							+ "对应的属性");
 				}
