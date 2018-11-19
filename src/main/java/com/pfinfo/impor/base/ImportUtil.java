@@ -29,7 +29,7 @@ public class ImportUtil {
 
 	/**
 	 * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。默认会存储excel到linux环境的 /tmp目录下，如果开发人员想自定义存储路径，
-	 * 建议开发人员使用{@link getData(Class<T>, String, String)}。
+	 * 建议开发人员使用{@link ImportUtil#getData(java.lang.Class, java.lang.String, java.lang.String)}。
 	 * 以下原因可能导致转换过程出错：
 	 * <ol>
 	 * <li>类对象没有使用{@link ImportModel com.pfinfo.impor.annotation.ImportModel}注解</li>
@@ -47,7 +47,7 @@ public class ImportUtil {
 	}
 	
 	/**
-	 * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。如果开发人员想自定义存储路径，建议开发人员使用此方法，不建议使用{@link getData(Class<T>, String)}。
+	 * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。如果开发人员想自定义存储路径，建议开发人员使用此方法，不建议使用{@link ImportUtil#getData(java.lang.Class, java.lang.String)}。
 	 * 以下原因可能导致转换过程出错：
 	 * <ol>
 	 * <li>类对象没有使用{@link ImportModel com.pfinfo.impor.annotation.ImportModel}注解</li>
@@ -97,7 +97,7 @@ public class ImportUtil {
                                 ImportModelBean importModelBean, Sheet sheet) {
         List<T> list = new ArrayList<>();
         Iterator<Row> rows = sheet.iterator();
-        // excel 行
+        // excel 表头（第一）行
         Row headerRow = rows.next();
         Map<String, Integer> header = ExcelUtil.getHeaderInfo(headerRow);
         Map<String, String> colsMap = importModelBean.getColsMap();
@@ -118,15 +118,17 @@ public class ImportUtil {
         return list;
     }
 
-	/**
-	 * 
-	 * @param clazz
-	 * @param header
-     * @param colsMap
-     * @param row
-	 * @return
+    /**
+     * 将传入的Row对象转化为List<T>集合对象
+     * @param clazz 类对象，需要转化的数据对象的Class对象
+     * @param allField <类对象字段名,类对象字段对象>映射关系
+     * @param header <表头,位置>映射关系
+     * @param colsMap <表头,类对象字段名>映射关系
+     * @param row 表格行
+     * @param <T> 泛型类，需要转化的数据对象
+     * @return
      * @throws ImportExcelBaseException
-	 */
+     */
 	private <T> T getTData(Class<T> clazz, Map<String, Field> allField,
 			Map<String, Integer> header, Map<String, String> colsMap, Row row)
 			throws ImportExcelBaseException {
