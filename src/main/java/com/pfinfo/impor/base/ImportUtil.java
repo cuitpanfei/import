@@ -32,9 +32,9 @@ public class ImportUtil {
 	 * 建议开发人员使用{@link ImportUtil#getData(java.lang.Class, java.lang.String, java.lang.String)}。
 	 * 以下原因可能导致转换过程出错：
 	 * <ol>
-	 * <li>类对象没有使用{@link ImportModel com.pfinfo.impor.annotation.ImportModel}注解</li>
-	 * <li></li>
-	 * <li></li>
+     * <li>类对象没有使用{@link ImportModel com.pfinfo.impor.annotation.ImportModel}注解</li>
+     * <li>类对象为空</li>
+     * <li>错误的网络路径</li>
 	 * </ol>
 	 * @param clazz 类对象
 	 * @param url 文件http地址
@@ -51,8 +51,8 @@ public class ImportUtil {
 	 * 以下原因可能导致转换过程出错：
 	 * <ol>
 	 * <li>类对象没有使用{@link ImportModel com.pfinfo.impor.annotation.ImportModel}注解</li>
-	 * <li></li>
-	 * <li></li>
+	 * <li>类对象为空</li>
+	 * <li>错误的网络路径</li>
 	 * </ol>
 	 * @param clazz 类对象
 	 * @param url 文件http地址
