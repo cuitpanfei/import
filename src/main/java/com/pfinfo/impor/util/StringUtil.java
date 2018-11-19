@@ -2,10 +2,13 @@ package com.pfinfo.impor.util;
 
 import com.pfinfo.impor.exception.ImportExcelBaseException;
 
+import static com.pfinfo.impor.util.ConstantConfig.XLS;
+import static com.pfinfo.impor.util.ConstantConfig.XLSX;
+
 public class StringUtil {
 
 	/**
-	 * 根据文件路径获取文件类型
+	 * 根据Excel文件网络路径获取文件类型
 	 * @param url 文件网络路径
 	 * @return 文件类型
 	 */
@@ -15,11 +18,11 @@ public class StringUtil {
 		}
 		// del url path param
 		String uri = url.indexOf("?")==-1?url:url.substring(0,url.indexOf("?"));
-		if(!org.apache.poi.util.StringUtil.endsWithIgnoreCase(uri, "xls")
-				&& !org.apache.poi.util.StringUtil.endsWithIgnoreCase(uri, "xlsx")){
+		if(!org.apache.poi.util.StringUtil.endsWithIgnoreCase(uri, XLS)
+				&& !org.apache.poi.util.StringUtil.endsWithIgnoreCase(uri, XLSX)){
 			throw new ImportExcelBaseException("文件不是Excel格式");
 		}
-		return url.substring(url.lastIndexOf("."),url.length());
+		return url.substring(url.lastIndexOf("."));
 	}
 
 	/**

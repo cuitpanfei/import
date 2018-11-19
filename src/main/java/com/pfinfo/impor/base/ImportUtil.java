@@ -18,6 +18,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
+
 /**
  * 批量导入数据转换工具
  * 
@@ -43,7 +45,7 @@ public class ImportUtil {
 	 */
 	public <T> List<T> getData(Class<T> clazz, String url)
 			throws ImportExcelBaseException {
-		return getData(clazz,url,"/tmp");
+		return getData(clazz,url, SAVEPATH);
 	}
 	
 	/**

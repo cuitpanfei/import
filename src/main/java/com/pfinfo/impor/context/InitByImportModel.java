@@ -18,7 +18,7 @@ import com.pfinfo.impor.util.ClassUtil;
 @Component
 public class InitByImportModel {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private static final Logger log = LoggerFactory.getLogger(InitByImportModel.class);
 
 	/**
 	 * 获取主类

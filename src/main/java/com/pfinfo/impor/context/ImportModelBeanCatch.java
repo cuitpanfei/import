@@ -10,7 +10,7 @@ import com.pfinfo.impor.bean.ImportModelBean;
 import com.pfinfo.impor.util.NullCheckUtil;
 
 public class ImportModelBeanCatch {
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private static final Logger log = LoggerFactory.getLogger(ImportModelBeanCatch.class);
 	
 	private Map<Class<?>, ImportModelBean> beanCatch = new HashMap<>();
 

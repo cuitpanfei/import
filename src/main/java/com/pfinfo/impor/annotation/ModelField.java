@@ -10,7 +10,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ModelField {
-	
+
+	/**
+	 * 必填项，列名称
+	 */
 	String columnName();
 
 }

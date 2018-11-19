@@ -17,9 +17,10 @@ import org.springframework.util.ResourceUtils;
 
 import com.pfinfo.impor.exception.ImportExcelBaseException;
 
+import static com.pfinfo.impor.util.ConstantConfig.XLS;
+import static com.pfinfo.impor.util.ConstantConfig.XLSX;
+
 public class ExcelUtil {
-	private static final String XLS = "xls";
-	private static final String XLSX = "xlsx";
 
 	public static Workbook getWorkbook(String localFilePaht)
 			throws ImportExcelBaseException {

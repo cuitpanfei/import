@@ -1,21 +1,19 @@
 package com.pfinfo.impor.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import com.pfinfo.impor.exception.ImportExcelBaseException;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.pfinfo.impor.exception.ImportExcelBaseException;
+import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
 
 public class HttpDownLoad {
-	
+
 	public static String downLoadFormUrl(String urlStr) throws ImportExcelBaseException{
-		return downLoadFormUrl(urlStr,"/tmp/");
+		return downLoadFormUrl(urlStr, SAVEPATH);
 	}
 	
 	public static String downLoadFormUrl(String urlStr,String savepath) throws ImportExcelBaseException{
@@ -51,7 +49,7 @@ public class HttpDownLoad {
 		//防止屏蔽程序抓取而返回403错误
 		conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; Windows NT; DigExt)");
 		//得到输入流
-		try(InputStream inputStream = conn.getInputStream();){
+		try(InputStream inputStream = conn.getInputStream()){
 			//取得字节数组
 			byte[] getData = readInputStream(inputStream);
 			//创建文件夹

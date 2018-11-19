@@ -1,5 +1,8 @@
 package com.pfinfo.impor.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -12,8 +15,8 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.pfinfo.impor.util.ConstantConfig.POINT;
+import static com.pfinfo.impor.util.ConstantConfig.VIRGULE;
 
 /**
  * 类相关的工具类
@@ -22,8 +25,8 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class ClassUtil{
-	
-	private static final Logger log = LoggerFactory.getLogger(ClassUtil.class);
+
+    private static final Logger log = LoggerFactory.getLogger(ClassUtil.class);
     /*
      * 取得某一类所在包的所有类名 不含迭代
      */
@@ -56,7 +59,7 @@ public class ClassUtil{
         boolean recursive = true;
         //获取包的名字 并进行替换
         String packageName = pack.getName();
-        String packageDirName = packageName.replace('.', '/');
+        String packageDirName = packageName.replace(POINT, VIRGULE);
         //定义一个枚举的集合 并进行循环来处理这个目录下的things
         Enumeration<URL> dirs;
         try {
@@ -70,7 +73,7 @@ public class ClassUtil{
                 //如果是以文件的形式保存在服务器上
                 if ("file".equals(protocol)) {
                     //获取包的物理路径
-                    String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
+                    String filePath = URLDecoder.decode(url.getFile(), ConstantConfig.UTF_8);
                     //以文件的方式扫描整个包下的文件 并添加到集合中
                     findAndAddClassesInPackageByFile(packageName, filePath, recursive, classes);
                 } else if ("jar".equals(protocol)){
@@ -88,17 +91,17 @@ public class ClassUtil{
                             JarEntry entry = entries.nextElement();
                             String name = entry.getName();
                             //如果是以/开头的
-                            if (name.charAt(0) == '/') {
+                            if (name.charAt(0) == VIRGULE) {
                                 //获取后面的字符串
                                 name = name.substring(1);
                             }
                             //如果前半部分和定义的包名相同
                             if (name.startsWith(packageDirName)) {
-                                int idx = name.lastIndexOf('/');
+                                int idx = name.lastIndexOf(VIRGULE);
                                 //如果以"/"结尾 是一个包
                                 if (idx != -1) {
                                     //获取包名 把"/"替换成"."
-                                    packageName = name.substring(0, idx).replace('/', '.');
+                                    packageName = name.substring(0, idx).replace(VIRGULE, POINT);
                                 }
                                 //如果可以迭代下去 并且是一个包
                                 if ((idx != -1) || recursive){
@@ -108,7 +111,7 @@ public class ClassUtil{
                                         String className = name.substring(packageName.length() + 1, name.length() - 6);
                                         try {
                                             //添加到classes
-                                            classes.add(Class.forName(packageName + '.' + className));
+                                            classes.add(Class.forName(packageName + POINT + className));
                                         } catch (ClassNotFoundException e) {
                                             log.error("添加用户自定义视图类错误 找不到此类的.class文件");
                                             e.printStackTrace();
@@ -166,7 +169,7 @@ public class ClassUtil{
                 String className = file.getName().substring(0, file.getName().length() - 6);
                 try {
                     //添加到集合中去
-                    classes.add(Class.forName(packageName + '.' + className));
+                    classes.add(Class.forName(packageName + POINT + className));
                 } catch (ClassNotFoundException e) {
                     log.error("添加用户自定义视图类错误 找不到此类的.class文件");
                     e.printStackTrace();
