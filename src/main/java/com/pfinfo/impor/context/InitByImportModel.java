@@ -65,7 +65,7 @@ public class InitByImportModel {
      * 通过类对象获取字段映射
      *
      * @param clazz
-     * @return
+     * @return <列名,属性名>
      */
     private Map<String, String> getAllFieldMap(Class<?> clazz) {
         Map<String, String> fieldMap = new HashMap<>();
