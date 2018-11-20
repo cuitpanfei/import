@@ -13,11 +13,21 @@ public class ImportModelBeanCatch {
     private static final ImportModelBeanCatch instance = new ImportModelBeanCatch();
     private Map<Class<?>, ImportModelBean> beanCatch = new HashMap<>();
 
+    /**
+     * 禁止通过new的方式创建对象，请通过以下方式获取对象
+     * {@link ImportModelBeanCatch#getInstance()}
+     */
+    private ImportModelBeanCatch(){}
+
+    /**
+     * 获取单例对象
+     * @return 单例对象
+     */
     public static ImportModelBeanCatch getInstance() {
         return instance;
     }
 
-    public synchronized ImportModelBean getCatch(Class<?> key) {
+    public ImportModelBean getCatch(Class<?> key) {
         if (NullCheckUtil.isEmpty(key)) {
             if (log.isDebugEnabled()) {
                 log.debug("The key is empty");
