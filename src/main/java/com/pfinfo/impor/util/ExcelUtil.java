@@ -1,5 +1,8 @@
 package com.pfinfo.impor.util;
 
+import static com.pfinfo.impor.util.ConstantConfig.XLS;
+import static com.pfinfo.impor.util.ConstantConfig.XLSX;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,9 +19,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.util.ResourceUtils;
 
 import com.pfinfo.impor.exception.ImportExcelBaseException;
-
-import static com.pfinfo.impor.util.ConstantConfig.XLS;
-import static com.pfinfo.impor.util.ConstantConfig.XLSX;
 
 public class ExcelUtil {
 

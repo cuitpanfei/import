@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Import;
 
 import com.pfinfo.impor.base.ImportUtil;

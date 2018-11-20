@@ -1,9 +1,9 @@
 package com.pfinfo.impor.util;
 
-import com.pfinfo.impor.exception.ImportExcelBaseException;
-
 import static com.pfinfo.impor.util.ConstantConfig.XLS;
 import static com.pfinfo.impor.util.ConstantConfig.XLSX;
+
+import com.pfinfo.impor.exception.ImportExcelBaseException;
 
 public class StringUtil {
 

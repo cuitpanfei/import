@@ -1,7 +1,7 @@
 package com.pfinfo.impor.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.pfinfo.impor.util.ConstantConfig.POINT;
+import static com.pfinfo.impor.util.ConstantConfig.VIRGULE;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -15,8 +15,8 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import static com.pfinfo.impor.util.ConstantConfig.POINT;
-import static com.pfinfo.impor.util.ConstantConfig.VIRGULE;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 类相关的工具类
