@@ -2,46 +2,45 @@ package com.pfinfo.impor.exception;
 
 /**
  * Excel批量导入自定义异常类
- * 
- * @author pys1714
  *
+ * @author pys1714
  */
 public class ImportExcelBaseException extends RuntimeException {
 
-	private int code = Integer.MIN_VALUE;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 8820109853700827761L;
+    private int code = Integer.MIN_VALUE;
 
-	public int getCode() {
-		return code;
-	}
+    public ImportExcelBaseException() {
+        super();
+    }
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8820109853700827761L;
+    public ImportExcelBaseException(Throwable cause) {
+        this(Integer.MIN_VALUE, cause.getMessage(), cause);
+    }
 
-	public ImportExcelBaseException() {
-		super();
-	}
+    public ImportExcelBaseException(String msg) {
+        this(Integer.MIN_VALUE, msg, null);
+    }
 
-	public ImportExcelBaseException(Throwable cause) {
-		this(Integer.MIN_VALUE, cause.getMessage(), cause);
-	}
-	public ImportExcelBaseException(String msg) {
-		this(Integer.MIN_VALUE, msg, null);
-	}
+    public ImportExcelBaseException(int code, String msg) {
+        this(code, msg, null);
+    }
 
-	public ImportExcelBaseException(int code, String msg) {
-		this(code, msg, null);
-	}
-	public ImportExcelBaseException(String msg,Throwable cause) {
-		this(Integer.MIN_VALUE, msg, cause);
-	}
+    public ImportExcelBaseException(String msg, Throwable cause) {
+        this(Integer.MIN_VALUE, msg, cause);
+    }
 
-	public ImportExcelBaseException(int code, String msg, Throwable cause) {
-		super(msg, cause);
-		this.code = code;
-	}
-	
-	
+    public ImportExcelBaseException(int code, String msg, Throwable cause) {
+        super(msg, cause);
+        this.code = code;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
 
 }
