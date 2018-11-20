@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
@@ -105,7 +106,7 @@ public class ImportUtil {
         Map<String, Integer> header = ExcelUtil.getHeaderInfo(headerRow);
         Map<String, String> colsMap = importModelBean.getColsMap();
         Map<String, Field> allField = Arrays.stream(clazz.getDeclaredFields())
-                .collect(Collectors.toMap(Field::getName, t -> t));
+                .collect(Collectors.toMap(Field::getName, UnaryOperator.identity()));
         while (rows.hasNext()) {
             Row row = rows.next();
             T t = null;
