@@ -20,7 +20,7 @@ public class NullCheckUtil {
     }
 
     public static boolean isEmpty(Object obj) {
-        if (obj == null) {
+        if (isNull(obj)) {
             return true;
         } else if (obj instanceof CharSequence) {
             return ((CharSequence) obj).length() == 0;

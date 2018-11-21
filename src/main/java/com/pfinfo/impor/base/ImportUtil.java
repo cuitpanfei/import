@@ -4,6 +4,7 @@ import com.pfinfo.impor.annotation.ImportModel;
 import com.pfinfo.impor.bean.ImportModelBean;
 import com.pfinfo.impor.context.ImportModelBeanCatch;
 import com.pfinfo.impor.exception.ImportExcelBaseException;
+import com.pfinfo.impor.service.CheckService;
 import com.pfinfo.impor.util.ExcelUtil;
 import com.pfinfo.impor.util.HttpDownLoad;
 import com.pfinfo.impor.util.NullCheckUtil;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,29 @@ import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
  */
 @Component
 public class ImportUtil {
+
+    /**
+     * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。默认会存储excel到linux环境的 /tmp目录下，如果开发人员想自定义存储路径，
+     * 建议开发人员使用{@link ImportUtil#getData(java.lang.Class, java.lang.String, java.lang.String)}。
+     * 在转换后将根据规则筛选,然后返回通过筛选的数据.
+     * 以下原因可能导致转换过程出错：
+     * <ol>
+     * <li>类对象没有使用{@link ImportModel com.pfinfo.impor.annotation.ImportModel}注解</li>
+     * <li>类对象为空</li>
+     * <li>错误的网络路径</li>
+     * </ol>
+     *
+     * @param clazz 类对象
+     * @param url   文件http地址
+     * @param predicate   单个记录的检验规则
+     * @return list集合
+     * @throws ImportExcelBaseException
+     */
+    public <T> List<T> getDataWithCheck(Class<T> clazz, String url, CheckService<? super T> predicate)
+            throws ImportExcelBaseException {
+        List<T> data = getData(clazz, url, SAVEPATH);
+        return data.stream().filter(predicate).collect(Collectors.toList());
+    }
 
     /**
      * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。默认会存储excel到linux环境的 /tmp目录下，如果开发人员想自定义存储路径，
