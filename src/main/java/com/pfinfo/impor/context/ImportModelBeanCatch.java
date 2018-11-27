@@ -17,10 +17,12 @@ public class ImportModelBeanCatch {
      * 禁止通过new的方式创建对象，请通过以下方式获取对象
      * {@link ImportModelBeanCatch#getInstance()}
      */
-    private ImportModelBeanCatch(){}
+    private ImportModelBeanCatch() {
+    }
 
     /**
      * 获取单例对象
+     *
      * @return 单例对象
      */
     public static ImportModelBeanCatch getInstance() {

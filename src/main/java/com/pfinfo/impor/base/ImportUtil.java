@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -42,9 +41,9 @@ public class ImportUtil {
      * <li>错误的网络路径</li>
      * </ol>
      *
-     * @param clazz 类对象
-     * @param url   文件http地址
-     * @param predicate   单个记录的检验规则
+     * @param clazz     类对象
+     * @param url       文件http地址
+     * @param predicate 单个记录的检验规则
      * @return list集合
      * @throws ImportExcelBaseException
      */
