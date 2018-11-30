@@ -4,6 +4,15 @@
 
 
 ### 1.导入pom
+
+首先下载jar文件，地址在[这里](https://github.com/cuitpanfei/import/releases)
+
+然后，将下载的jar文件打包
+```cmd
+    mvn install:install-file -Dfile=xxx-0.0.1-SNAPSHOT.jar -DgroupId=com.pfinfo -DartifactId=import -Dversion=0.0.1-SNAPSHOT
+```
+
+最后，导入pom依赖
 ```xml
 <dependency>
 	<groupId>com.pfinfo</groupId>
