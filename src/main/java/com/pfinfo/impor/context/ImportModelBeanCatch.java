@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @desc 导入模板映射关系容器
+ * @author cuitpanfei
+ */
 public class ImportModelBeanCatch {
     private static final Logger log = LoggerFactory.getLogger(ImportModelBeanCatch.class);
     private static final ImportModelBeanCatch instance = new ImportModelBeanCatch();
@@ -29,6 +33,11 @@ public class ImportModelBeanCatch {
         return instance;
     }
 
+    /**
+     * 根据类对象获取映射关系集合
+     * @param key
+     * @return
+     */
     public ImportModelBean getCatch(Class<?> key) {
         if (NullCheckUtil.isEmpty(key)) {
             if (log.isDebugEnabled()) {

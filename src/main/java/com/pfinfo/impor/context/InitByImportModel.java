@@ -14,6 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @desc 初始化模板映射关系容器
+ * @author cuitpanfei
+ */
 @Component
 public class InitByImportModel {
 
