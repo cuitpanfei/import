@@ -3,7 +3,7 @@ package com.pfinfo.impor.exception;
 /**
  * Excel批量导入自定义异常类
  *
- * @author pys1714
+ * @author cuitpanfei
  */
 public class ImportExcelBaseException extends RuntimeException {
 

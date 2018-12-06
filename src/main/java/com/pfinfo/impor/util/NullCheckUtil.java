@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * 判断对象是否为空或null
  *
- * @author pys1714
+ * @author cuitpanfei
  */
 public class NullCheckUtil {
 

@@ -15,6 +15,10 @@ import java.util.Map;
 import static com.pfinfo.impor.util.ConstantConfig.XLS;
 import static com.pfinfo.impor.util.ConstantConfig.XLSX;
 
+/**
+ *
+ * @author cuitpanfei
+ */
 public class ExcelUtil {
 
     /**

@@ -5,10 +5,17 @@ import com.pfinfo.impor.exception.ImportExcelBaseException;
 import static com.pfinfo.impor.util.ConstantConfig.XLS;
 import static com.pfinfo.impor.util.ConstantConfig.XLSX;
 
+
+/**
+ * 自定义字符串工具类
+ * @author cuitpanfei
+ */
 public class StringUtil {
 
     /**
      * 根据Excel文件网络路径获取文件类型
+     * <be/>
+     * 如果url="http://domain.com/filename.xlxs"，返回结果为："xlxs"。
      *
      * @param url 文件网络路径
      * @return 文件类型

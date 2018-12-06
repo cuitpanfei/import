@@ -4,6 +4,11 @@ import com.pfinfo.impor.exception.ImportExcelBaseException;
 
 import java.util.function.Predicate;
 
+/**
+ *
+ * @param <T>
+ * @author cuitpanfei
+ */
 @FunctionalInterface
 public interface CheckService<T> extends Predicate<T> {
 

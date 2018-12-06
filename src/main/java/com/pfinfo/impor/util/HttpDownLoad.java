@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
 
 import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
 
+/**
+ *
+ * @author cuitpanfei
+ */
 public class HttpDownLoad {
 
     public static String downLoadFormUrl(String urlStr) throws ImportExcelBaseException {
