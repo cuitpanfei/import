@@ -53,7 +53,7 @@ public class ImportModelBeanCatch {
         }
     }
 
-    public synchronized boolean addCatch(Class<?> key, ImportModelBean value) {
+     synchronized boolean addCatch(Class<?> key, ImportModelBean value) {
         if (NullCheckUtil.isEmpty(key)) {
             if (log.isDebugEnabled()) {
                 log.debug("The key is empty");
