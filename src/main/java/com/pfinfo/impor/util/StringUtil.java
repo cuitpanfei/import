@@ -8,6 +8,7 @@ import static com.pfinfo.impor.util.ConstantConfig.XLSX;
 
 /**
  * 自定义字符串工具类
+ *
  * @author cuitpanfei
  */
 public class StringUtil {
@@ -55,6 +56,54 @@ public class StringUtil {
         char[] ch = str.toCharArray();
         ch[0] = (char) (ch[0] + 32);
         return new String(ch);
+    }
+
+    /**
+     * 检查给定的字符串{@code String} 是否是 {@code null} 或者长度为 0.
+     * <p>Note: 当字符串{@code String} 是空格组成时,本方法也将会返回 {@code true} .
+     *
+     * @param str 参与检查的字符串 {@code String} (可能为 {@code null})
+     * @return 如果字符串 {@code String} 不为 {@code null} 并且长度不为0,就返回{@code true}
+     */
+    public static boolean hasLength(String str) {
+        return (str != null && !str.isEmpty());
+    }
+
+    /**
+     * 用字符串newPattern {@code String} 替换字符串inString {@code String} 内所有出现的子字符串oldPattern {@code String}
+     * @param inString
+     * @param oldPattern
+     * @param newPattern
+     * @return
+     */
+    public static String replace(String inString, String oldPattern, String newPattern) {
+        if (!hasLength(inString) || !hasLength(oldPattern) || newPattern == null) {
+            return inString;
+        }
+        int index = inString.indexOf(oldPattern);
+        if (index == -1) {
+            // no occurrence -> can return input as-is
+            return inString;
+        }
+
+        int capacity = inString.length();
+        if (newPattern.length() > oldPattern.length()) {
+            capacity += 16;
+        }
+        StringBuilder sb = new StringBuilder(capacity);
+        // our position in the old string
+        int pos = 0;
+        int patLen = oldPattern.length();
+        while (index >= 0) {
+            sb.append(inString.substring(pos, index));
+            sb.append(newPattern);
+            pos = index + patLen;
+            index = inString.indexOf(oldPattern, pos);
+        }
+
+        // append any characters to the right of a match
+        sb.append(inString.substring(pos));
+        return sb.toString();
     }
 
 }

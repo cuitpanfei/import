@@ -1,7 +1,6 @@
 package com.pfinfo.impor.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -23,11 +22,11 @@ import static com.pfinfo.impor.util.ConstantConfig.VIRGULE;
  *
  * @author <a href="mailto:ohergal@gmail.com">ohergal</a>
  */
+@Slf4j
 public class ClassUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(ClassUtil.class);
 
-    /*
+    /**
      * 取得某一类所在包的所有类名 不含迭代
      */
     public static String[] getPackageAllClassName(String classLocation, String packageName) {
@@ -177,5 +176,32 @@ public class ClassUtil {
                 }
             }
         }
+    }
+
+    /**
+     * 获取类加载器
+     * @return
+     */
+    public static ClassLoader getDefaultClassLoader() {
+
+        ClassLoader cl = null;
+        try {
+            cl = Thread.currentThread().getContextClassLoader();
+        } catch (Throwable ex) {
+            // Cannot access thread context ClassLoader - falling back...
+        }
+        if (cl == null) {
+            // No thread context class loader -> use class loader of this class.
+            cl = ClassUtil.class.getClassLoader();
+            if (cl == null) {
+                // getClassLoader() returning null indicates the bootstrap ClassLoader
+                try {
+                    cl = ClassLoader.getSystemClassLoader();
+                } catch (Throwable ex) {
+                    // Cannot access system ClassLoader - oh well, maybe the caller can live with null...
+                }
+            }
+        }
+        return cl;
     }
 }

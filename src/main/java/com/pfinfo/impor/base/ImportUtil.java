@@ -12,7 +12,6 @@ import com.pfinfo.impor.util.StringUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -27,7 +26,6 @@ import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
  *
  * @author cuitpanfei
  */
-@Component
 public class ImportUtil {
 
     /**
@@ -47,7 +45,7 @@ public class ImportUtil {
      * @return list集合
      * @throws ImportExcelBaseException
      */
-    public <T> List<T> getDataWithCheck(Class<T> clazz, String url, CheckService<? super T> predicate)
+    public static <T> List<T> getDataWithCheck(Class<T> clazz, String url, CheckService<? super T> predicate)
             throws ImportExcelBaseException {
         List<T> data = getData(clazz, url, SAVEPATH);
         return data.stream().filter(predicate).collect(Collectors.toList());
@@ -88,7 +86,7 @@ public class ImportUtil {
      * @return list集合
      * @throws ImportExcelBaseException
      */
-    public <T> List<T> getData(Class<T> clazz, String url, String path)
+    public static <T> List<T> getData(Class<T> clazz, String url, String path)
             throws ImportExcelBaseException {
         if (NullCheckUtil.isEmpty(clazz)) {
             throw new ImportExcelBaseException("clazz is empty");
@@ -121,7 +119,7 @@ public class ImportUtil {
      * @param <T>             泛型
      * @return 泛型对象集合
      */
-    private <T> List<T> getData(Class<T> clazz,
+    private static <T> List<T> getData(Class<T> clazz,
                                 ImportModelBean importModelBean, Sheet sheet) {
         List<T> list = new ArrayList<>();
         Iterator<Row> rows = sheet.iterator();
@@ -158,7 +156,7 @@ public class ImportUtil {
      * @return
      * @throws ImportExcelBaseException
      */
-    private <T> T getTData(Class<T> clazz, Map<String, Field> allField,
+    private static <T> T getTData(Class<T> clazz, Map<String, Field> allField,
                            Map<String, Integer> header, Map<String, String> colsMap, Row row)
             throws ImportExcelBaseException {
         try {
@@ -191,7 +189,7 @@ public class ImportUtil {
      * @param importModelBean 映射关系
      * @return 检查结果
      */
-    private boolean checkHeader(Class<?> clazz, Map<String, Row> headers,
+    private static boolean checkHeader(Class<?> clazz, Map<String, Row> headers,
                                 ImportModelBean importModelBean) {
         // excel 行
         Row header = headers.get(importModelBean.getSheetName());

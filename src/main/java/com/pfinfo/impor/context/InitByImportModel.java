@@ -5,9 +5,7 @@ import com.pfinfo.impor.annotation.ModelField;
 import com.pfinfo.impor.bean.ImportModelBean;
 import com.pfinfo.impor.exception.ImportExcelBaseException;
 import com.pfinfo.impor.util.ClassUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -15,13 +13,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @desc 初始化模板映射关系容器
  * @author cuitpanfei
+ * @desc 初始化模板映射关系容器
  */
-@Component
+@Slf4j
 public class InitByImportModel {
 
-    private static final Logger log = LoggerFactory.getLogger(InitByImportModel.class);
 
     public InitByImportModel() {
         if (log.isDebugEnabled()) {
@@ -32,15 +29,15 @@ public class InitByImportModel {
         Set<Class<?>> all = ClassUtil.getClasses(pack);
         all.stream()
                 .filter(clazz -> clazz.getAnnotation(ImportModel.class) != null)
-                .forEach(
-                        clazz -> {
-                            ImportModel info = clazz.getAnnotation(ImportModel.class);
-                            Map<String, String> fieldsMap = getAllFieldMap(clazz);
-                            if (fieldsMap.isEmpty() && log.isDebugEnabled()) {
-                                log.debug("{}内部没有属性使用了ModelField注解", clazz.getName());
-                            }
-                            ImportModelBeanCatch.getInstance().addCatch(clazz, new ImportModelBean(info.sheetName(), fieldsMap));
-                        });
+                .forEach(clazz -> {
+                    ImportModel info = clazz.getAnnotation(ImportModel.class);
+                    Map<String, String> fieldsMap = getAllFieldMap(clazz);
+                    if (fieldsMap.isEmpty() && log.isDebugEnabled()) {
+                        log.debug("{}内部没有属性使用了ModelField注解", clazz.getName());
+                    }
+                    ImportModelBeanCatch.getInstance()
+                            .addCatch(clazz, new ImportModelBean(info.sheetName(), fieldsMap));
+                });
         if (log.isDebugEnabled()) {
             log.debug("init import bean map end.");
         }

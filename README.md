@@ -37,44 +37,20 @@ public class TerminalInfo {
 ```
 ### 3. Excel文件转为对应List集合
 
-#### 1). 启动类上使用注解@EnableImportUtil
-
-```java
-@EnableImportUtil
-@SpringBootApplication
-public class ImportSpringApplication {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		SpringApplication.run(ImportSpringApplication.class, args);
-	}
-}
-```
-#### 2). 业务类（controller/service/Action/...）内部调用工具类那只方法。
+#### 1). 业务类（controller/service/Action/...）内部调用工具类对应的静态方法。
 
 我这里就在controller层展示了，如下：
 
 ```java
-@RestController
 public class ImportTerminalController {
-	
-	/**
-	 * 如果要使用ImportUtil，启动类上必须使用注解：
-	 *  <code>@EnableImportUtil</code> ，否则，将导致应用无法启动。
-	 */
-	@Autowired
-	private ImportUtil importUtil;
 	
 	/**
 	 * 将url路径对应的文件内容转换为list集合。
 	 * @param fileUrl 文件 url 路径
 	 * @return list集合。
 	 */
-	@GetMapping({"","/","/importInfo"})
 	public List<TerminalInfo> importInfo(String fileUrl){
-		return importUtil.getData(TerminalInfo.class, fileUrl);
+		return ImportUtil.getData(TerminalInfo.class, fileUrl);
 	}
 
 }
