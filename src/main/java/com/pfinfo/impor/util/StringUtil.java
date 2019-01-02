@@ -14,7 +14,7 @@ public class StringUtil {
 
     /**
      * 根据Excel文件网络路径获取文件类型
-     * <be/>
+     * <br>
      * 如果url="http://domain.com/filename.xlxs"，返回结果为："xlxs"。
      *
      * @param url 文件网络路径
@@ -36,8 +36,8 @@ public class StringUtil {
     /**
      * 首字母大写，第一个字符减去32
      *
-     * @param str
-     * @return
+     * @param str 需要转换的字符串
+     * @return 转换后的字符串
      */
     public static String upperCase(String str) {
         char[] ch = str.toCharArray();
@@ -48,8 +48,8 @@ public class StringUtil {
     /**
      * 首字母小写，第一个字符加上32
      *
-     * @param str
-     * @return
+     * @param str 需要转换的字符串
+     * @return 转换后的字符串
      */
     public static String lowerCase(String str) {
         char[] ch = str.toCharArray();

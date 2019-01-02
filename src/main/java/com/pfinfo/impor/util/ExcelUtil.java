@@ -16,7 +16,6 @@ import static com.pfinfo.impor.util.ConstantConfig.XLS;
 import static com.pfinfo.impor.util.ConstantConfig.XLSX;
 
 /**
- *
  * @author cuitpanfei
  */
 public class ExcelUtil {
@@ -46,8 +45,8 @@ public class ExcelUtil {
     /**
      * 获取工作簿的所有表头（第一行）
      *
-     * @param workbook
-     * @return Map集合。（key->表名,value->表头）
+     * @param workbook 工作簿
+     * @return Map集合。（key：表名,value：表头）
      */
     public static Map<String, Row> getHeads(Workbook workbook) {
         Map<String, Row> rows = new HashMap<>(workbook.getNumberOfSheets());
@@ -61,8 +60,8 @@ public class ExcelUtil {
     /**
      * 获取表
      *
-     * @param workbook
-     * @return Map集合。（key->表名,value->表）
+     * @param workbook 工作簿
+     * @return Map集合。（key：表名,value：表）
      */
     public static Map<String, Sheet> getSheet(Workbook workbook) {
         Map<String, Sheet> all = new HashMap<>(workbook.getNumberOfSheets());
@@ -76,8 +75,9 @@ public class ExcelUtil {
     /**
      * 获取表
      *
-     * @param workbook
-     * @return Sheet
+     * @param workbook  工作簿
+     * @param sheetName 表明
+     * @return 工作表（sheet）
      */
     public static Sheet getSheet(Workbook workbook, String sheetName) {
         Map<String, Sheet> sheets = getSheet(workbook);
@@ -87,7 +87,7 @@ public class ExcelUtil {
     /**
      * 文本方式获取单元格的值
      *
-     * @param cell
+     * @param cell 单元格
      * @return 文本值
      */
     public static String getCellValueAsString(Cell cell) {
@@ -119,8 +119,8 @@ public class ExcelUtil {
     /**
      * 将表头的位置信息与表头列信息取出
      *
-     * @param headerRow
-     * @return
+     * @param headerRow 表格头行
+     * @return 表头的位置信息与表头列信息取出
      */
     public static Map<String, Integer> getHeaderInfo(Row headerRow) {
         Map<String, Integer> headInfo = new HashMap<>();

@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
 
 /**
- *
  * @author cuitpanfei
  */
 public class HttpDownLoad {
@@ -43,7 +42,8 @@ public class HttpDownLoad {
     /**
      * 检查url是否是网络地址
      *
-     * @param urlStr
+     * @param urlStr 　url地址
+     * @return true： 是网络地址，false：不是网络地址
      */
     private static boolean checkUrl(String urlStr) {
         String regex = "^([hH][tT]{2}[pP]:/*|[hH][tT]{2}[pP][sS]:/*|[fF][tT][pP]:/*)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+(\\?{0,1}(([A-Za-z0-9-~]+\\={0,1})([A-Za-z0-9-~]*)\\&{0,1})*)$";
@@ -52,12 +52,12 @@ public class HttpDownLoad {
     }
 
     /**
-     * @param urlStr
-     * @param fileName
-     * @param savePath
-     * @param time
-     * @return
-     * @throws IOException
+     * @param urlStr   url地址
+     * @param fileName 文件名
+     * @param savePath 服务器文件保存地址
+     * @param time     超时时间,单位(秒)
+     * @return 文件地址
+     * @throws IOException io异常
      */
     public static String downLoadFormUrl(String urlStr, String fileName, String savePath, int time) throws IOException {
         URL url = new URL(urlStr);

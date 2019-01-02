@@ -9,6 +9,7 @@ public @interface ModelField {
 
     /**
      * 必填项，列名称
+     * @return 列名称
      */
     String columnName();
 
