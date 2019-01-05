@@ -187,16 +187,29 @@ public class ImportUtil {
         }
     }
 
+    /**
+     * 根据类型转换value为对应类型
+     *
+     * @param value 数据
+     * @param type  期望类型
+     * @return 转换后的对象
+     */
     private Object coverTo(String value, Class<?> type) {
-        if(type == Long.TYPE || type==Long.class){
-           return Long.valueOf(value);
-        }else if(type == Integer.TYPE|| type==Integer.class) {
+        if (type == Long.TYPE || type == Long.class) {
+            return Long.valueOf(value);
+        } else if (type == Integer.TYPE || type == Integer.class) {
             return Integer.valueOf(value);
-        }else if(type == Boolean.TYPE|| type==Boolean.class) {
+        } else if (type == Boolean.TYPE || type == Boolean.class) {
             return Boolean.valueOf(value);
-        }else if(type == Byte.TYPE|| type==Byte.class) {
+        } else if (type == Float.TYPE || type == Float.class) {
+            return Boolean.valueOf(value);
+        } else if (type == Double.TYPE || type == Double.class) {
+            return Double.valueOf(value);
+        } else if (type == Short.TYPE || type == Short.class) {
+            return Short.valueOf(value);
+        } else if (type == Byte.TYPE || type == Byte.class) {
             return Byte.valueOf(value);
-        }else  {
+        } else {
             return value;
         }
     }
