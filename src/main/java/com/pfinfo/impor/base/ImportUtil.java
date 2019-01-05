@@ -66,7 +66,7 @@ public class ImportUtil {
      * @return list集合
      * @throws ImportExcelBaseException
      */
-    public <T> List<T> getData(Class<T> clazz, String url)
+    public static <T> List<T> getData(Class<T> clazz, String url)
             throws ImportExcelBaseException {
         return getData(clazz, url, SAVEPATH);
     }
@@ -120,7 +120,7 @@ public class ImportUtil {
      * @return 泛型对象集合
      */
     private static <T> List<T> getData(Class<T> clazz,
-                                ImportModelBean importModelBean, Sheet sheet) {
+                                       ImportModelBean importModelBean, Sheet sheet) {
         List<T> list = new ArrayList<>();
         Iterator<Row> rows = sheet.iterator();
         // excel 表头（第一）行
@@ -157,17 +157,18 @@ public class ImportUtil {
      * @throws ImportExcelBaseException
      */
     private static <T> T getTData(Class<T> clazz, Map<String, Field> allField,
-                           Map<String, Integer> header, Map<String, String> colsMap, Row row)
+                                  Map<String, Integer> header, Map<String, String> colsMap, Row row)
             throws ImportExcelBaseException {
         try {
             T t = clazz.newInstance();
             colsMap.forEach((nameCN, fieldName) -> {
                 try {
                     int index = header.get(nameCN);
-                    Object value = ExcelUtil.getCellValueAsString(row.getCell(index));
+                    String valueStr = ExcelUtil.getCellValueAsString(row.getCell(index));
                     Field field = allField.get(fieldName);
                     // 打破封装
                     field.setAccessible(true);
+                    Object value = coverTo(valueStr, field.getType());
                     Method m = clazz.getMethod("set" + StringUtil.upperCase(fieldName), field.getType());
                     m.invoke(t, value);
                 } catch (Exception e) {
@@ -182,6 +183,33 @@ public class ImportUtil {
     }
 
     /**
+     * 根据类型转换value为对应类型
+     *
+     * @param value 数据
+     * @param type  期望类型
+     * @return 转换后的对象
+     */
+    private static Object coverTo(String value, Class<?> type) {
+        if (type == Long.TYPE || type == Long.class) {
+            return Long.valueOf(value);
+        } else if (type == Integer.TYPE || type == Integer.class) {
+            return Integer.valueOf(value);
+        } else if (type == Boolean.TYPE || type == Boolean.class) {
+            return Boolean.valueOf(value);
+        } else if (type == Float.TYPE || type == Float.class) {
+            return Boolean.valueOf(value);
+        } else if (type == Double.TYPE || type == Double.class) {
+            return Double.valueOf(value);
+        } else if (type == Short.TYPE || type == Short.class) {
+            return Short.valueOf(value);
+        } else if (type == Byte.TYPE || type == Byte.class) {
+            return Byte.valueOf(value);
+        } else {
+            return value;
+        }
+    }
+
+    /**
      * 根据类对象检查表头，如果检查通过，返回true，检查不通过，抛出异常。
      *
      * @param clazz           类对象
@@ -190,7 +218,7 @@ public class ImportUtil {
      * @return 检查结果
      */
     private static boolean checkHeader(Class<?> clazz, Map<String, Row> headers,
-                                ImportModelBean importModelBean) {
+                                       ImportModelBean importModelBean) {
         // excel 行
         Row header = headers.get(importModelBean.getSheetName());
         // bean对象 字段与表头映射关系
