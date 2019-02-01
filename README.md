@@ -5,19 +5,31 @@
 
 ### 1.导入pom
 
-首先下载jar文件，地址在[这里](https://github.com/cuitpanfei/import/releases)
-
-然后，将下载的jar文件打包
+#### 1) 首先下载pure分支源码并本地打jar包,然后进入target,就可以看见jar包了
 ```cmd
-    mvn install:install-file -Dfile=xxx-0.0.1-SNAPSHOT.jar -DgroupId=com.pfinfo -DartifactId=import -Dversion=0.0.1-SNAPSHOT
+> git clone https://github.com/cuitpanfei/import.git -b pure
+> cd import
+> mvn clean package
+> cd target
 ```
 
-最后，导入pom依赖
+#### 2) 然后，将编译好的的jar文件打包
+```cmd
+    mvn install:install-file -Dfile=import-0.0.1-pure.jar -DgroupId=com.pfinfo -DartifactId=import -Dversion=0.0.1-pure
+```
+
+#### 3) 当然你也可以在第一阶段的第三步执行下面的命令:
+```cmd
+> mvn clean install
+```
+这样叫你就可以跳过第二阶段
+
+#### 4) 最后，导入pom依赖
 ```xml
 <dependency>
 	<groupId>com.pfinfo</groupId>
 	<artifactId>import</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-pure</version>
 </dependency>
 ```
 
