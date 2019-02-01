@@ -19,8 +19,20 @@ import java.util.Set;
 @Slf4j
 public class InitByImportModel {
 
+    public static void init(){
+        if(initByImportModel==null){
+            reload();
+        }else{
+            log.warn("InitByImportModel was inited");
+        }
+    }
+    public static synchronized void reload(){
+        initByImportModel = new InitByImportModel();
+        System.gc();
+    }
+    private static volatile InitByImportModel initByImportModel;
 
-    public InitByImportModel() {
+    private InitByImportModel() {
         if (log.isDebugEnabled()) {
             log.debug("init import bean map start.");
         }

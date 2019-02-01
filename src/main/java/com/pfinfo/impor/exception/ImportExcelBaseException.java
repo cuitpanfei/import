@@ -1,5 +1,7 @@
 package com.pfinfo.impor.exception;
 
+import lombok.Getter;
+
 /**
  * Excel批量导入自定义异常类
  *
@@ -11,6 +13,8 @@ public class ImportExcelBaseException extends RuntimeException {
      *
      */
     private static final long serialVersionUID = 8820109853700827761L;
+
+    @Getter
     private int code = Integer.MIN_VALUE;
 
     public ImportExcelBaseException() {
@@ -37,10 +41,5 @@ public class ImportExcelBaseException extends RuntimeException {
         super(msg, cause);
         this.code = code;
     }
-
-    public int getCode() {
-        return code;
-    }
-
 
 }
