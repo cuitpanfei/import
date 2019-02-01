@@ -41,11 +41,12 @@ public class ImportUtil {
      * <li>错误的网络路径</li>
      * </ol>
      *
+     * @param <T>       泛型
      * @param clazz     类对象
      * @param url       文件http地址
      * @param predicate 单个记录的检验规则
      * @return list集合
-     * @throws ImportExcelBaseException
+     * @throws ImportExcelBaseException 自定义文件导入异常
      */
     public <T> List<T> getDataWithCheck(Class<T> clazz, String url, CheckService<? super T> predicate)
             throws ImportExcelBaseException {
@@ -63,10 +64,11 @@ public class ImportUtil {
      * <li>错误的网络路径</li>
      * </ol>
      *
+     * @param <T>   泛型
      * @param clazz 类对象
      * @param url   文件http地址
      * @return list集合
-     * @throws ImportExcelBaseException
+     * @throws ImportExcelBaseException 自定义文件上传异常
      */
     public <T> List<T> getData(Class<T> clazz, String url)
             throws ImportExcelBaseException {
@@ -82,11 +84,12 @@ public class ImportUtil {
      * <li>错误的网络路径</li>
      * </ol>
      *
+     * @param <T>   泛型
      * @param clazz 类对象
      * @param url   文件http地址
      * @param path  文件下载后本地文件夹
      * @return list集合
-     * @throws ImportExcelBaseException
+     * @throws ImportExcelBaseException 自定义文件上传异常
      */
     public <T> List<T> getData(Class<T> clazz, String url, String path)
             throws ImportExcelBaseException {
@@ -155,8 +158,8 @@ public class ImportUtil {
      * @param colsMap  <表头,类对象字段名>映射关系
      * @param row      表格行
      * @param <T>      泛型类，需要转化的数据对象
-     * @return
-     * @throws ImportExcelBaseException
+     * @return ""
+     * @throws ImportExcelBaseException 自定义文件上传异常
      */
     private <T> T getTData(Class<T> clazz, Map<String, Field> allField,
                            Map<String, Integer> header, Map<String, String> colsMap, Row row)
@@ -166,10 +169,11 @@ public class ImportUtil {
             colsMap.forEach((nameCN, fieldName) -> {
                 try {
                     int index = header.get(nameCN);
-                    Object value = ExcelUtil.getCellValueAsString(row.getCell(index));
+                    String valueStr = ExcelUtil.getCellValueAsString(row.getCell(index));
                     Field field = allField.get(fieldName);
                     // 打破封装
                     field.setAccessible(true);
+                    Object value = coverTo(valueStr, field.getType());
                     Method m = clazz.getMethod("set" + StringUtil.upperCase(fieldName), field.getType());
                     m.invoke(t, value);
                 } catch (Exception e) {
@@ -180,6 +184,33 @@ public class ImportUtil {
             return t;
         } catch (Exception e) {
             throw new ImportExcelBaseException("第" + row.getRowNum() + "行转化出错,原因：" + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 根据类型转换value为对应类型
+     *
+     * @param value 数据
+     * @param type  期望类型
+     * @return 转换后的对象
+     */
+    private Object coverTo(String value, Class<?> type) {
+        if (type == Long.TYPE || type == Long.class) {
+            return Long.valueOf(value);
+        } else if (type == Integer.TYPE || type == Integer.class) {
+            return Integer.valueOf(value);
+        } else if (type == Boolean.TYPE || type == Boolean.class) {
+            return Boolean.valueOf(value);
+        } else if (type == Float.TYPE || type == Float.class) {
+            return Boolean.valueOf(value);
+        } else if (type == Double.TYPE || type == Double.class) {
+            return Double.valueOf(value);
+        } else if (type == Short.TYPE || type == Short.class) {
+            return Short.valueOf(value);
+        } else if (type == Byte.TYPE || type == Byte.class) {
+            return Byte.valueOf(value);
+        } else {
+            return value;
         }
     }
 

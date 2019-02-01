@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * @desc excel导入模板的映射关系类，根据模板类生成，用于存储模板类名及对应sheetName，还有第一行表头和模板类属性名的映射关系。
+ * excel导入模板的映射关系类，根据模板类生成，用于存储模板类名及对应sheetName，还有第一行表头和模板类属性名的映射关系。
  * @author cuitpanfei
  */
 public class ImportModelBean implements Serializable {

@@ -9,6 +9,7 @@ public @interface ImportModel {
 
     /**
      * 必填项，表名
+     * @return 表名
      */
     String sheetName();
 }

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @desc 导入模板映射关系容器
+ * 导入模板映射关系容器
  * @author cuitpanfei
  */
 public class ImportModelBeanCatch {
@@ -35,8 +35,8 @@ public class ImportModelBeanCatch {
 
     /**
      * 根据类对象获取映射关系集合
-     * @param key
-     * @return
+     * @param key　类对象
+     * @return 映射关系集合
      */
     public ImportModelBean getCatch(Class<?> key) {
         if (NullCheckUtil.isEmpty(key)) {

@@ -49,8 +49,8 @@ public class ClassUtil {
     /**
      * 从包package中获取所有的Class
      *
-     * @param pack
-     * @return
+     * @param pack 　包对象
+     * @return ""
      */
     public static Set<Class<?>> getClasses(Package pack) {
 
@@ -78,7 +78,7 @@ public class ClassUtil {
                     //以文件的方式扫描整个包下的文件 并添加到集合中
                     findAndAddClassesInPackageByFile(packageName, filePath, recursive, classes);
                 } else if ("jar".equals(protocol)) {
-                    //如果是jar包文件 
+                    //如果是jar包文件
                     //定义一个JarFile
                     JarFile jar;
                     try {
@@ -137,10 +137,10 @@ public class ClassUtil {
     /**
      * 以文件的形式来获取包下的所有Class
      *
-     * @param packageName
-     * @param packagePath
-     * @param recursive
-     * @param classes
+     * @param packageName 包对象
+     * @param packagePath 包路径
+     * @param recursive   是否启用自定义过滤规则
+     * @param classes     类对象集合
      */
     public static void findAndAddClassesInPackageByFile(String packageName, String packagePath, final boolean recursive, Set<Class<?>> classes) {
         //获取此包的目录 建立一个File

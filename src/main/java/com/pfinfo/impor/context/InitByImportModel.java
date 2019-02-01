@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @desc 初始化模板映射关系容器
+ * 初始化模板映射关系容器
  * @author cuitpanfei
  */
 @Component
@@ -49,7 +49,7 @@ public class InitByImportModel {
     /**
      * 获取主类
      *
-     * @return
+     * @return 主类
      */
     private Class<?> deduceMainApplicationClass() {
         try {
