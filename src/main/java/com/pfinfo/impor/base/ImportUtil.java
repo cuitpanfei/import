@@ -31,7 +31,7 @@ import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
 public class ImportUtil {
 
     /**
-     * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。默认会存储excel到linux环境的 /tmp目录下，如果开发人员想自定义存储路径，
+     * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。url对应文件默认会存储excel到linux环境的 /tmp目录下，如果开发人员想自定义存储路径，
      * 建议开发人员使用{@link ImportUtil#getData(java.lang.Class, java.lang.String, java.lang.String)}。
      * 在转换后将根据规则筛选,然后返回通过筛选的数据.
      * 以下原因可能导致转换过程出错：
@@ -124,8 +124,7 @@ public class ImportUtil {
      * @param <T>             泛型
      * @return 泛型对象集合
      */
-    private <T> List<T> getData(Class<T> clazz,
-                                ImportModelBean importModelBean, Sheet sheet) {
+    private <T> List<T> getData(Class<T> clazz,ImportModelBean importModelBean, Sheet sheet) throws ImportExcelBaseException {
         List<T> list = new ArrayList<>();
         Iterator<Row> rows = sheet.iterator();
         // excel 表头（第一）行
@@ -136,12 +135,7 @@ public class ImportUtil {
                 .collect(Collectors.toMap(Field::getName, UnaryOperator.identity()));
         while (rows.hasNext()) {
             Row row = rows.next();
-            T t = null;
-            try {
-                t = getTData(clazz, allField, header, colsMap, row);
-            } catch (ImportExcelBaseException e) {
-                e.printStackTrace();
-            }
+            T t = getTData(clazz, allField, header, colsMap, row);
             if (NullCheckUtil.isNotEmpty(t)) {
                 list.add(t);
             }

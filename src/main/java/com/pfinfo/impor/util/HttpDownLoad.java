@@ -16,15 +16,30 @@ import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
  */
 public class HttpDownLoad {
 
-    public static String downLoadFormUrl(String urlStr) throws ImportExcelBaseException {
-        return downLoadFormUrl(urlStr, SAVEPATH);
-    }
+	/**
+	 * 根据文件网络地址下载文件
+	 * 
+	 * @param urlStr 文件的网络地址
+	 * @return 下载后的文件本地地址
+	 * @throws ImportExcelBaseException 遇见异常的时候，抛出自定义异常
+	 */
+	public static String downLoadFormUrl(String urlStr) throws ImportExcelBaseException {
+		return downLoadFormUrl(urlStr, SAVEPATH);
+	}
 
-    public static String downLoadFormUrl(String urlStr, String savepath) throws ImportExcelBaseException {
-        return downLoadFormUrl(urlStr, savepath, 3);
-    }
+	/**
+	 * 根据文件网络地址下载文件到指定的本地存储地址，如果下载失败，将会重试3次，重试3次还是失败，将会抛出最后一次异常
+	 * 
+	 * @param urlStr   文件的网络地址
+	 * @param savepath 下载后的文件本地存储地址
+	 * @return 下载后的文件本地地址
+	 * @throws ImportExcelBaseException 遇见异常的时候，抛出自定义异常
+	 */
+	public static String downLoadFormUrl(String urlStr, String savepath) throws ImportExcelBaseException {
+		return downLoadFormUrl(urlStr, savepath, 3);
+	}
 
-    public static String downLoadFormUrl(String urlStr, String savepath, int time) throws ImportExcelBaseException {
+	public static String downLoadFormUrl(String urlStr, String savepath, int times) throws ImportExcelBaseException {
         if (!checkUrl(urlStr)) {
             throw new ImportExcelBaseException("文件地址不是网络地址");
         }
@@ -32,69 +47,73 @@ public class HttpDownLoad {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
         String fileName = LocalDateTime.now().format(formatter) + suffix;
         try {
-            String localPath = downLoadFormUrl(urlStr, fileName, savepath, time);
+            String localPath = downLoadFormUrl(urlStr, fileName, savepath, 10);
             return localPath;
         } catch (IOException e) {
-            throw new ImportExcelBaseException(e);
+        	if(times>0) {
+        		return downLoadFormUrl(urlStr, savepath, --times);
+        	}else {
+        		throw new ImportExcelBaseException(e);
+        	}
         }
     }
 
-    /**
-     * 检查url是否是网络地址
-     *
-     * @param urlStr 　url地址
-     * @return true： 是网络地址，false：不是网络地址
-     */
-    private static boolean checkUrl(String urlStr) {
-        String regex = "^([hH][tT]{2}[pP]:/*|[hH][tT]{2}[pP][sS]:/*|[fF][tT][pP]:/*)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+(\\?{0,1}(([A-Za-z0-9-~]+\\={0,1})([A-Za-z0-9-~]*)\\&{0,1})*)$";
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(urlStr).matches();
-    }
+	/**
+	 * 检查url是否是网络地址
+	 *
+	 * @param urlStr url地址
+	 * @return true： 是网络地址，false：不是网络地址
+	 */
+	private static boolean checkUrl(String urlStr) {
+		String regex = "^([hH][tT]{2}[pP]:/*|[hH][tT]{2}[pP][sS]:/*|[fF][tT][pP]:/*)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+(\\?{0,1}(([A-Za-z0-9-~]+\\={0,1})([A-Za-z0-9-~]*)\\&{0,1})*)$";
+		Pattern pattern = Pattern.compile(regex);
+		return pattern.matcher(urlStr).matches();
+	}
 
-    /**
-     * @param urlStr   url地址
-     * @param fileName 文件名
-     * @param savePath 服务器文件保存地址
-     * @param time     超时时间,单位(秒)
-     * @return 文件地址
-     * @throws IOException io异常
-     */
-    public static String downLoadFormUrl(String urlStr, String fileName, String savePath, int time) throws IOException {
-        URL url = new URL(urlStr);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        //设置超时时间
-        conn.setConnectTimeout(time * 1000);
-        //防止屏蔽程序抓取而返回403错误
-        conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; Windows NT; DigExt)");
-        //得到输入流
-        try (InputStream inputStream = conn.getInputStream()) {
-            //取得字节数组
-            byte[] getData = readInputStream(inputStream);
-            //创建文件夹
-            File saveDir = new File(savePath);
-            if (saveDir.exists()) {
-                saveDir.mkdir();
-            }
-            //构建文件路径
-            String finalPath = saveDir + File.separator + fileName;
-            //写到服务器
-            File file = new File(saveDir + File.separator + fileName);
-            try (FileOutputStream fos = new FileOutputStream(file)) {
-                fos.write(getData);
-            }
-            //返回服务器文件路径
-            return finalPath;
-        }
-    }
+	/**
+	 * @param urlStr   url地址
+	 * @param fileName 文件名
+	 * @param savePath 服务器文件保存地址
+	 * @param time     超时时间,单位(秒)
+	 * @return 文件地址
+	 * @throws IOException io异常
+	 */
+	public static String downLoadFormUrl(String urlStr, String fileName, String savePath, int time) throws IOException {
+		URL url = new URL(urlStr);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		// 设置超时时间
+		conn.setConnectTimeout(time * 1000);
+		// 防止屏蔽程序抓取而返回403错误
+		conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; Windows NT; DigExt)");
+		// 得到输入流
+		try (InputStream inputStream = conn.getInputStream()) {
+			// 取得字节数组
+			byte[] getData = readInputStream(inputStream);
+			// 创建文件夹
+			File saveDir = new File(savePath);
+			if (saveDir.exists()) {
+				saveDir.mkdir();
+			}
+			// 构建文件路径
+			String finalPath = saveDir + File.separator + fileName;
+			// 写到服务器
+			File file = new File(saveDir + File.separator + fileName);
+			try (FileOutputStream fos = new FileOutputStream(file)) {
+				fos.write(getData);
+			}
+			// 返回服务器文件路径
+			return finalPath;
+		}
+	}
 
-    public static byte[] readInputStream(InputStream inputStream) throws IOException {
-        byte[] buffer = new byte[1024];
-        int len = 0;
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-            while ((len = inputStream.read(buffer)) != -1) {
-                bos.write(buffer, 0, len);
-            }
-            return bos.toByteArray();
-        }
-    }
+	public static byte[] readInputStream(InputStream inputStream) throws IOException {
+		byte[] buffer = new byte[1024];
+		int len = 0;
+		try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+			while ((len = inputStream.read(buffer)) != -1) {
+				bos.write(buffer, 0, len);
+			}
+			return bos.toByteArray();
+		}
+	}
 }

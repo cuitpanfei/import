@@ -2,6 +2,11 @@ package com.pfinfo.impor.annotation;
 
 import java.lang.annotation.*;
 
+/**
+ * 
+ * @author cuitpanfei
+ *
+ */
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

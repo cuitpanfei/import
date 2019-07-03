@@ -25,7 +25,8 @@ public class StringUtil {
             throw new ImportExcelBaseException("文件路径不能为空");
         }
         // del url path param
-        String uri = url.indexOf("?") == -1 ? url : url.substring(0, url.indexOf("?"));
+        int index = url.indexOf("?");
+        String uri = index == -1 ? url : url.substring(0, index);
         if (!org.apache.poi.util.StringUtil.endsWithIgnoreCase(uri, XLS)
                 && !org.apache.poi.util.StringUtil.endsWithIgnoreCase(uri, XLSX)) {
             throw new ImportExcelBaseException("文件不是Excel格式");
