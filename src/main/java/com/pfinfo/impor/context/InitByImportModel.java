@@ -27,10 +27,15 @@ public class InitByImportModel {
         }
     }
     public static synchronized void reload(){
+    	if(expireTime>System.currentTimeMillis()) {
+    		return;
+    	}
         initByImportModel = new InitByImportModel();
         System.gc();
+        expireTime=System.currentTimeMillis()+1000;
     }
     private static volatile InitByImportModel initByImportModel;
+    private static volatile long expireTime;
 
     private InitByImportModel() {
         if (log.isDebugEnabled()) {

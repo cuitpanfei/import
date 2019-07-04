@@ -47,8 +47,34 @@ public class ImportUtil {
      */
     public static <T> List<T> getDataWithCheck(Class<T> clazz, String url, CheckService<? super T> predicate)
             throws ImportExcelBaseException {
+        return getDataWithCheck(clazz,url,predicate,false);
+    }
+    /**
+     * 将指定url对应的文件数据转换成指定的对象,如果转换过程出错，抛出自定义异常。默认会存储excel到linux环境的 /tmp目录下，如果开发人员想自定义存储路径，
+     * 建议开发人员使用{@link ImportUtil#getData(java.lang.Class, java.lang.String, java.lang.String)}。
+     * 在转换后将根据规则筛选,然后返回通过筛选的数据。如果开启了异步并行检查，检查过程中将会并行执行。建议在数据量不大或者检查规则耗时不高的情况下使用{@link ImportUtil#getDataWithCheck(java.lang.Class, java.lang.String, com.pfinfo.impor.service.CheckService)}
+     * 以下原因可能导致转换过程出错：
+     * <ol>
+     * <li>类对象没有使用{@link ImportModel com.pfinfo.impor.annotation.ImportModel}注解</li>
+     * <li>类对象为空</li>
+     * <li>错误的网络路径</li>
+     * </ol>
+     *
+     * @param clazz     类对象
+     * @param url       文件http地址
+     * @param predicate 单个记录的检验规则
+     * @param parallel 是否开启异步检查
+     * @return list集合
+     * @throws ImportExcelBaseException
+     */
+    public static <T> List<T> getDataWithCheck(Class<T> clazz, String url, CheckService<? super T> predicate,boolean parallel)
+            throws ImportExcelBaseException {
         List<T> data = getData(clazz, url, SAVEPATH);
-        return data.stream().filter(predicate).collect(Collectors.toList());
+        if(parallel) {
+        	return data.parallelStream().filter(predicate).collect(Collectors.toList());
+        }else {
+        	return data.stream().filter(predicate).collect(Collectors.toList());
+        }
     }
 
     /**

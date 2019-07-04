@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 public interface CheckService<T> extends Predicate<T> {
 
     /**
-     * 检查服务,如果检查不通过,抛出自定义异常
+     * 检查服务,如果检查出现异常,可能抛出自定义异常
      *
      * @throws ImportExcelBaseException
      */

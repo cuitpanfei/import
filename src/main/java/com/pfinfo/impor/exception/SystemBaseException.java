@@ -8,7 +8,12 @@ package com.pfinfo.impor.exception;
  */
 public class SystemBaseException extends RuntimeException {
 
-    public SystemBaseException() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3469229905321785626L;
+	
+	public SystemBaseException() {
         super();
     }
 
