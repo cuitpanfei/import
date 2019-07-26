@@ -1,26 +1,31 @@
 package com.pfinfo.impor.context;
 
-import com.pfinfo.impor.bean.ImportModelBean;
-import com.pfinfo.impor.util.NullCheckUtil;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import com.pfinfo.impor.bean.ImportModelBean;
+import com.pfinfo.impor.util.NullCheckUtil;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @desc 导入模板映射关系容器
  * @author cuitpanfei
  */
 @Slf4j
-public class ImportModelBeanCatch {
-    private static final ImportModelBeanCatch instance = new ImportModelBeanCatch();
-    private Map<Class<?>, ImportModelBean> beanCatch = new HashMap<>();
+final class ImportModelBeanCatch {
+	private static final ImportModelBeanCatch instance = new ImportModelBeanCatch();
+    private Map<String, ImportModelBean> beanCatch = new HashMap<>();
 
     /**
      * 禁止通过new的方式创建对象，请通过以下方式获取对象
      * {@link ImportModelBeanCatch#getInstance()}
      */
     private ImportModelBeanCatch() {
+    	if(Objects.nonNull(instance)) {
+    		throw new RuntimeException("禁止创建容器对象");
+    	}
     }
 
     /**
@@ -45,7 +50,7 @@ public class ImportModelBeanCatch {
             return null;
         }
         try {
-            return beanCatch.get(key);
+            return beanCatch.get(key.getName());
         } catch (Exception e) {
             log.error("get Catch data by key:{} error", key, e);
             return null;
@@ -60,7 +65,7 @@ public class ImportModelBeanCatch {
             return false;
         }
         try {
-            beanCatch.put(key, value);
+            beanCatch.put(key.getName(), value);
         } catch (Exception e) {
             log.error("Catch data<{},{}> error", key, value, e);
             return false;

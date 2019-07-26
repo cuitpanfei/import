@@ -1,25 +1,30 @@
 package com.pfinfo.impor.base;
 
+import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
 import com.pfinfo.impor.annotation.ImportModel;
 import com.pfinfo.impor.bean.ImportModelBean;
-import com.pfinfo.impor.context.ImportModelBeanCatch;
+import com.pfinfo.impor.context.BeanCatchContext;
 import com.pfinfo.impor.exception.ImportExcelBaseException;
 import com.pfinfo.impor.service.CheckService;
 import com.pfinfo.impor.util.ExcelUtil;
 import com.pfinfo.impor.util.HttpDownLoad;
 import com.pfinfo.impor.util.NullCheckUtil;
 import com.pfinfo.impor.util.StringUtil;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
-
-import static com.pfinfo.impor.util.ConstantConfig.SAVEPATH;
 
 /**
  * 批量导入数据转换工具
@@ -117,8 +122,7 @@ public class ImportUtil {
         if (NullCheckUtil.isEmpty(clazz)) {
             throw new ImportExcelBaseException("clazz is empty");
         }
-        ImportModelBean importModelBean = ImportModelBeanCatch.getInstance()
-                .getCatch(clazz);
+        ImportModelBean importModelBean = BeanCatchContext.getCatch(clazz);
         if (NullCheckUtil.isEmpty(importModelBean)) {
             throw new ImportExcelBaseException(" 类 " + clazz.getName() + "可能没有使用ImportModel注解");
         }

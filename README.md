@@ -14,8 +14,9 @@
 ```
 
 #### 2) 然后，将编译好的的jar文件打包
+- 请注意填写指定版本号
 ```cmd
-    mvn install:install-file -Dfile=import-0.0.1-pure.jar -DgroupId=com.pfinfo -DartifactId=import -Dversion=0.0.1-pure
+    mvn install:install-file -Dfile=import-${version}.jar -DgroupId=com.pfinfo -DartifactId=import -Dversion=${version}
 ```
 
 #### 3) 当然你也可以在第一阶段的第三步执行下面的命令:
@@ -26,10 +27,11 @@
 
 #### 4) 最后，导入pom依赖
 ```xml
+
 <dependency>
 	<groupId>com.pfinfo</groupId>
 	<artifactId>import</artifactId>
-	<version>0.0.1-pure</version>
+	<version>${version}</version>
 </dependency>
 ```
 
@@ -74,4 +76,14 @@ public class ImportTerminalController {
 <ol>
 <li> 将数据转换时吞掉的异常抛出，只要有一行数据有问题，就直接终止导入操作.</li>
 <li> 新增一个自定义文件存储路径的方法。</li>
+</ol>
+
+
+
+# 通用导入 1.2版本
+
+## 更新说明：
+<ol>
+<li> 更新版本号为：0.0.2-pure.</li>
+<li> 修改容器类修饰，新增一个容器访问类：BeanCatchContext.java</li>
 </ol>
